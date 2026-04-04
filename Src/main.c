@@ -16,10 +16,10 @@ void delay(volatile uint32_t count)
 int main(void)
 {
     GPIO_EnableClock(GPIOA);
-    GPIO_SetPin(GPIOA, 1, GPIO_MODE_OUTPUT_PULL_2MHZ);
+    GPIO_SetPin(GPIOA, 2, GPIO_MODE_OUTPUT_PULL_2MHZ);
     while (1)
     {
-        GPIO_Toggle(GPIOA, 1);
+        GPIO_Toggle(GPIOA, 2);
         delay(500000);
     }
     return 0;

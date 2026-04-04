@@ -39,7 +39,7 @@ typedef struct
     volatile uint32_t RCC_AHBRSTR;
     volatile uint32_t RCC_CFGR2;
 } RCC_TypeDef;
- 
+
 typedef struct
 {
     volatile uint32_t GPIOx_CRL;

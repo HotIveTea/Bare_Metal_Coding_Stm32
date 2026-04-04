@@ -1,0 +1,351 @@
+
+Discarded input sections
+
+ .data          0x00000000        0x0 Build/gpio.o
+ .bss           0x00000000        0x0 Build/gpio.o
+ .data          0x00000000        0x0 Build/main.o
+ .bss           0x00000000        0x0 Build/main.o
+ .data          0x00000000        0x0 Build/startup.o
+ .bss           0x00000000        0x0 Build/startup.o
+ .text          0x00000000       0xba Build/usart.o
+ .data          0x00000000        0x0 Build/usart.o
+ .bss           0x00000000        0x0 Build/usart.o
+ .debug_info    0x00000000      0x1f7 Build/usart.o
+ .debug_abbrev  0x00000000       0xfb Build/usart.o
+ .debug_aranges
+                0x00000000       0x20 Build/usart.o
+ .debug_line    0x00000000      0x185 Build/usart.o
+ .debug_str     0x00000000      0x1f1 Build/usart.o
+ .comment       0x00000000       0x4a Build/usart.o
+ .debug_frame   0x00000000       0xd4 Build/usart.o
+ .ARM.attributes
+                0x00000000       0x2d Build/usart.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+SRAM             0x20000000         0x00005000         xrw
+FLASH            0x08000000         0x00010000         xr
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD Build/gpio.o
+LOAD Build/main.o
+LOAD Build/startup.o
+LOAD Build/usart.o
+                0x20005000                _estack = (ORIGIN (SRAM) + LENGTH (SRAM))
+                0x00000200                _Min_Heap_Size = 0x200
+                0x00000400                _Min_Stack_Size = 0x400
+
+.isr_vector     0x08000000       0xec
+                0x08000000                . = ALIGN (0x4)
+ *(.isr_vector)
+ .isr_vector    0x08000000       0xec Build/startup.o
+                0x08000000                isr_vector
+                0x080000ec                . = ALIGN (0x4)
+
+.text           0x080000ec      0x234
+                0x080000ec                . = ALIGN (0x4)
+ *(.text)
+ .text          0x080000ec      0x188 Build/gpio.o
+                0x080000ec                GPIO_EnableClock
+                0x08000194                GPIO_SetPin
+                0x0800020e                GPIO_WritePin
+                0x0800024c                GPIO_Toggle
+ .text          0x08000274       0x4c Build/main.o
+                0x08000274                delay
+                0x08000294                main
+ .text          0x080002c0       0x60 Build/startup.o
+                0x080002c0                RTC_Alarm_IRQHandler
+                0x080002c0                EXTI2_IRQHandler
+                0x080002c0                SVCall_Handler
+                0x080002c0                TIM1_CC_IRQHandler
+                0x080002c0                Systick_Handler
+                0x080002c0                Hardfault_Handler
+                0x080002c0                PVD_IRQHandler
+                0x080002c0                PendSV_Handler
+                0x080002c0                NMI_Handler
+                0x080002c0                EXTI3_IRQHandler
+                0x080002c0                EXTI0_IRQHandler
+                0x080002c0                I2C2_EV_IRQHandler
+                0x080002c0                UsageFault_Handler
+                0x080002c0                ADC1_2_IRQHandler
+                0x080002c0                SPI1_IRQHandler
+                0x080002c0                TAMPER_IRQHandler
+                0x080002c0                DMA1_Channel4_IRQHandler
+                0x080002c0                USART3_IRQHandler
+                0x080002c0                RTC_IRQHandler
+                0x080002c0                DMA1_Channel7_IRQHandler
+                0x080002c0                I2C1_ER_IRQHandler
+                0x080002c0                CAN1_RX1_IRQHandler
+                0x080002c0                TIM4_IRQHandler
+                0x080002c0                I2C1_EV_IRQHandler
+                0x080002c0                DMA1_Channel6_IRQHandler
+                0x080002c0                TIM3_IRQHandler
+                0x080002c0                RCC_IRQHandler
+                0x080002c0                TIM1_TRG_COM_IRQHandler
+                0x080002c0                DMA1_Channel1_IRQHandler
+                0x080002c0                Default_Handler
+                0x080002c0                EXTI15_10_IRQHandler
+                0x080002c0                EXTI9_5_IRQHandler
+                0x080002c0                SPI2_IRQHandler
+                0x080002c0                MemManage_Handler
+                0x080002c0                DMA1_Channel5_IRQHandler
+                0x080002c0                EXTI4_IRQHandler
+                0x080002c0                USB_LP_CAN1_RX0_IRQHandler
+                0x080002c0                USB_HP_CAN1_TX_IRQHandler
+                0x080002c0                DMA1_Channel3_IRQHandler
+                0x080002c0                TIM1_UP_IRQHandler
+                0x080002c0                WWDG_IRQHandler
+                0x080002c0                TIM2_IRQHandler
+                0x080002c0                TIM1_BRK_IRQHandler
+                0x080002c0                EXTI1_IRQHandler
+                0x080002c0                USART2_IRQHandler
+                0x080002c0                I2C2_ER_IRQHandler
+                0x080002c0                DMA1_Channel2_IRQHandler
+                0x080002c0                CAN1_SCE_IRQHandler
+                0x080002c0                FLASH_IRQHandler
+                0x080002c0                BusFault_Handler
+                0x080002c0                USART1_IRQHandler
+                0x080002c0                USBWakeUp_IRQHandler
+                0x080002c6                Reset_Handler
+ *(.text*)
+ *(.glue_7)
+ .glue_7        0x08000320        0x0 linker stubs
+ *(.glue_7t)
+ .glue_7t       0x08000320        0x0 linker stubs
+ *(.eh_frame)
+ *(.init)
+ *(.fini)
+                0x08000320                . = ALIGN (0x4)
+                0x08000320                _etext = .
+
+.vfp11_veneer   0x08000320        0x0
+ .vfp11_veneer  0x08000320        0x0 linker stubs
+
+.v4_bx          0x08000320        0x0
+ .v4_bx         0x08000320        0x0 linker stubs
+
+.iplt           0x08000320        0x0
+ .iplt          0x08000320        0x0 Build/main.o
+
+.rel.dyn        0x08000320        0x0
+ .rel.iplt      0x08000320        0x0 Build/main.o
+
+.rodata         0x08000320        0x0
+                0x08000320                . = ALIGN (0x4)
+ *(.rodata)
+ *(.rodata*)
+                0x08000320                . = ALIGN (0x4)
+
+.ARM.extab      0x08000320        0x0
+                0x08000320                . = ALIGN (0x4)
+ *(.ARM.extab* .gnu.linkonce.armextab.*)
+                0x08000320                . = ALIGN (0x4)
+
+.ARM            0x08000320        0x0
+                0x08000320                . = ALIGN (0x4)
+                0x08000320                __exidx_start = .
+ *(.ARM.exidx*)
+                0x08000320                __exidx_end = .
+                0x08000320                . = ALIGN (0x4)
+
+.preinit_array  0x08000320        0x0
+                0x08000320                . = ALIGN (0x4)
+                [!provide]                PROVIDE (__preinit_array_start = .)
+ *(.preinit_array*)
+                [!provide]                PROVIDE (__preinit_array_end = .)
+                0x08000320                . = ALIGN (0x4)
+
+.init_array     0x08000320        0x0
+                0x08000320                . = ALIGN (0x4)
+                [!provide]                PROVIDE (__init_array_start = .)
+ *(SORT_BY_NAME(.init_array.*))
+ *(.init_array*)
+                [!provide]                PROVIDE (__init_array_end = .)
+                0x08000320                . = ALIGN (0x4)
+
+.fini_array     0x08000320        0x0
+                0x08000320                . = ALIGN (0x4)
+                [!provide]                PROVIDE (__fini_array_start = .)
+ *(SORT_BY_NAME(.fini_array.*))
+ *(.fini_array*)
+                [!provide]                PROVIDE (__fini_array_end = .)
+                0x08000320                . = ALIGN (0x4)
+                0x08000320                _sidata = LOADADDR (.data)
+
+.data           0x20000000        0x0 load address 0x08000320
+                0x20000000                . = ALIGN (0x4)
+                0x20000000                _sdata = .
+ *(.data)
+ *(.data*)
+ *(.RamFunc)
+ *(.RamFunc*)
+                0x20000000                . = ALIGN (0x4)
+                0x20000000                _edata = .
+
+.igot.plt       0x20000000        0x0 load address 0x08000320
+ .igot.plt      0x20000000        0x0 Build/main.o
+                0x20000000                . = ALIGN (0x4)
+
+.bss            0x20000000        0x0 load address 0x08000320
+                0x20000000                _sbss = .
+                0x20000000                __bss_start__ = _sbss
+ *(.bss)
+ *(.bss*)
+ *(COMMON)
+                0x20000000                _ebss = .
+                0x20000000                __bss_end__ = _ebss
+
+._user_heap_stack
+                0x20000000      0x600 load address 0x08000320
+                0x20000000                . = ALIGN (0x8)
+                [!provide]                PROVIDE (end = .)
+                [!provide]                PROVIDE (_end = .)
+                0x20000200                . = (. + _Min_Heap_Size)
+ *fill*         0x20000000      0x200 
+                0x20000600                . = (. + _Min_Stack_Size)
+ *fill*         0x20000200      0x400 
+                0x20000600                . = ALIGN (0x8)
+
+/DISCARD/
+ libc.a(*)
+ libm.a(*)
+ libgcc.a(*)
+
+.ARM.attributes
+                0x00000000       0x2d
+ *(.ARM.attributes)
+ .ARM.attributes
+                0x00000000       0x2d Build/gpio.o
+ .ARM.attributes
+                0x0000002d       0x2d Build/main.o
+ .ARM.attributes
+                0x0000005a       0x2d Build/startup.o
+OUTPUT(Build/project.elf elf32-littlearm)
+LOAD linker stubs
+LOAD c:/program files (x86)/gnu arm embedded toolchain/10 2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc.a
+LOAD c:/program files (x86)/gnu arm embedded toolchain/10 2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libm.a
+LOAD c:/program files (x86)/gnu arm embedded toolchain/10 2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7-m/nofp\libgcc.a
+
+.debug_info     0x00000000      0x59a
+ .debug_info    0x00000000      0x2e8 Build/gpio.o
+ .debug_info    0x000002e8      0x177 Build/main.o
+ .debug_info    0x0000045f      0x13b Build/startup.o
+
+.debug_abbrev   0x00000000      0x261
+ .debug_abbrev  0x00000000       0xdd Build/gpio.o
+ .debug_abbrev  0x000000dd       0xc3 Build/main.o
+ .debug_abbrev  0x000001a0       0xc1 Build/startup.o
+
+.debug_aranges  0x00000000       0x60
+ .debug_aranges
+                0x00000000       0x20 Build/gpio.o
+ .debug_aranges
+                0x00000020       0x20 Build/main.o
+ .debug_aranges
+                0x00000040       0x20 Build/startup.o
+
+.debug_line     0x00000000      0x45c
+ .debug_line    0x00000000      0x1c2 Build/gpio.o
+ .debug_line    0x000001c2      0x156 Build/main.o
+ .debug_line    0x00000318      0x144 Build/startup.o
+
+.debug_str      0x00000000      0x3ad
+ .debug_str     0x00000000      0x2d3 Build/gpio.o
+                                0x318 (size before relaxing)
+ .debug_str     0x000002d3       0x72 Build/main.o
+                                0x28b (size before relaxing)
+ .debug_str     0x00000345       0x68 Build/startup.o
+                                0x192 (size before relaxing)
+
+.comment        0x00000000       0x49
+ .comment       0x00000000       0x49 Build/gpio.o
+                                 0x4a (size before relaxing)
+ .comment       0x00000049       0x4a Build/main.o
+ .comment       0x00000049       0x4a Build/startup.o
+
+.debug_frame    0x00000000      0x14c
+ .debug_frame   0x00000000       0xb0 Build/gpio.o
+ .debug_frame   0x000000b0       0x54 Build/main.o
+ .debug_frame   0x00000104       0x48 Build/startup.o
+
+Cross Reference Table
+
+Symbol                                            File
+ADC1_2_IRQHandler                                 Build/startup.o
+BusFault_Handler                                  Build/startup.o
+CAN1_RX1_IRQHandler                               Build/startup.o
+CAN1_SCE_IRQHandler                               Build/startup.o
+DMA1_Channel1_IRQHandler                          Build/startup.o
+DMA1_Channel2_IRQHandler                          Build/startup.o
+DMA1_Channel3_IRQHandler                          Build/startup.o
+DMA1_Channel4_IRQHandler                          Build/startup.o
+DMA1_Channel5_IRQHandler                          Build/startup.o
+DMA1_Channel6_IRQHandler                          Build/startup.o
+DMA1_Channel7_IRQHandler                          Build/startup.o
+Default_Handler                                   Build/startup.o
+EXTI0_IRQHandler                                  Build/startup.o
+EXTI15_10_IRQHandler                              Build/startup.o
+EXTI1_IRQHandler                                  Build/startup.o
+EXTI2_IRQHandler                                  Build/startup.o
+EXTI3_IRQHandler                                  Build/startup.o
+EXTI4_IRQHandler                                  Build/startup.o
+EXTI9_5_IRQHandler                                Build/startup.o
+FLASH_IRQHandler                                  Build/startup.o
+GPIO_EnableClock                                  Build/gpio.o
+                                                  Build/main.o
+GPIO_SetPin                                       Build/gpio.o
+                                                  Build/main.o
+GPIO_Toggle                                       Build/gpio.o
+                                                  Build/main.o
+GPIO_WritePin                                     Build/gpio.o
+Hardfault_Handler                                 Build/startup.o
+I2C1_ER_IRQHandler                                Build/startup.o
+I2C1_EV_IRQHandler                                Build/startup.o
+I2C2_ER_IRQHandler                                Build/startup.o
+I2C2_EV_IRQHandler                                Build/startup.o
+MemManage_Handler                                 Build/startup.o
+NMI_Handler                                       Build/startup.o
+PVD_IRQHandler                                    Build/startup.o
+PendSV_Handler                                    Build/startup.o
+RCC_IRQHandler                                    Build/startup.o
+RTC_Alarm_IRQHandler                              Build/startup.o
+RTC_IRQHandler                                    Build/startup.o
+Reset_Handler                                     Build/startup.o
+SPI1_IRQHandler                                   Build/startup.o
+SPI2_IRQHandler                                   Build/startup.o
+SVCall_Handler                                    Build/startup.o
+Systick_Handler                                   Build/startup.o
+TAMPER_IRQHandler                                 Build/startup.o
+TIM1_BRK_IRQHandler                               Build/startup.o
+TIM1_CC_IRQHandler                                Build/startup.o
+TIM1_TRG_COM_IRQHandler                           Build/startup.o
+TIM1_UP_IRQHandler                                Build/startup.o
+TIM2_IRQHandler                                   Build/startup.o
+TIM3_IRQHandler                                   Build/startup.o
+TIM4_IRQHandler                                   Build/startup.o
+USART1_IRQHandler                                 Build/startup.o
+USART2_IRQHandler                                 Build/startup.o
+USART3_IRQHandler                                 Build/startup.o
+USART_Init                                        Build/usart.o
+USART_Received                                    Build/usart.o
+USART_SendChar                                    Build/usart.o
+USART_SendString                                  Build/usart.o
+USART_SetBaudRate                                 Build/usart.o
+USBWakeUp_IRQHandler                              Build/startup.o
+USB_HP_CAN1_TX_IRQHandler                         Build/startup.o
+USB_LP_CAN1_RX0_IRQHandler                        Build/startup.o
+UsageFault_Handler                                Build/startup.o
+WWDG_IRQHandler                                   Build/startup.o
+_ebss                                             Build/startup.o
+_edata                                            Build/startup.o
+_estack                                           Build/startup.o
+_sbss                                             Build/startup.o
+_sdata                                            Build/startup.o
+_sidata                                           Build/startup.o
+delay                                             Build/main.o
+isr_vector                                        Build/startup.o
+main                                              Build/main.o
+                                                  Build/startup.o
