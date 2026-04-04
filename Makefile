@@ -29,7 +29,7 @@ $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 # 4. Biên dịch từng file .c thành file .o
 $(BUILD_DIR)/%.o: Src/%.c | $(BUILD_DIR)
 		$(CC) -c $(CFLAGS) $< -o $@
-# 5. Tự động tạo thư mục Build nếu chưa có (lệnh này chạy mượt trên Windows)
+# 5. Tự động tạo thư mục Build nếu chưa có
 $(BUILD_DIR):
 		if not exist $(BUILD_DIR) mkdir $(BUILD_DIR)
 .PHONY: clean flash
