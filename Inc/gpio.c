@@ -1,0 +1,53 @@
+#include "gpio.h"
+
+void GPIO_EnableClock(GPIO_TypeDef *GPIOx)
+{
+    switch ((uint32_t)GPIOx)
+    {
+    case GPIOA_PERIPH_BASE:
+        RCC->RCC_APB2ENR |= (1 << 2);
+        break;
+    case GPIOB_PERIPH_BASE:
+        RCC->RCC_APB2ENR |= (1 << 3);
+        break;
+    case GPIOC_PERIPH_BASE:
+        RCC->RCC_APB2ENR |= (1 << 4);
+        break;
+    case GPIOD_PERIPH_BASE:
+        RCC->RCC_APB2ENR |= (1 << 5);
+        break;
+    case GPIOE_PERIPH_BASE:
+        RCC->RCC_APB2ENR |= (1 << 6);
+        break;
+    default:
+        break;
+    }
+}
+void GPIO_SetPin(GPIO_TypeDef *GPIOx, uint8_t pin, GPIO_MODE_Typedef mode)
+{
+    if (pin < 8)
+    {
+        GPIOx->GPIOx_CRL &= ~(0xF << (pin * 4));
+        GPIOx->GPIOx_CRL |= (mode << (pin * 4));
+    }
+    else
+    {
+        GPIOx->GPIOx_CRH &= ~(0xF << ((pin - 8) * 4));
+        GPIOx->GPIOx_CRH |= (mode << ((pin - 8) * 4));
+    }
+}
+void GPIO_WritePin(GPIO_TypeDef *GPIOx, uint8_t pin, uint8_t state)
+{
+    if (state)
+    {
+        GPIOx->GPIOx_BSRR = (1 << pin);
+    }
+    else
+    {
+        GPIOx->GPIOx_BRR = (1 << pin);
+    }
+}
+void GPIO_Toggle(GPIO_TypeDef *GPIOx, uint8_t pin)
+{
+    GPIOx->GPIOx_ODR ^= (1 << pin);
+}

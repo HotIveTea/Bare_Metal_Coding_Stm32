@@ -1,0 +1,255 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+SRAM             0x20000000         0x00005000         xrw
+FLASH            0x08000000         0x00010000         xr
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD Src/main.o
+LOAD Inc/gpio.o
+LOAD startup.o
+                0x20005000                _estack = (ORIGIN (SRAM) + LENGTH (SRAM))
+                0x00000200                _Min_Heap_Size = 0x200
+                0x00000400                _Min_Stack_Size = 0x400
+
+.isr_vector     0x08000000       0xec
+                0x08000000                . = ALIGN (0x4)
+ *(.isr_vector)
+ .isr_vector    0x08000000       0xec startup.o
+                0x08000000                isr_vector
+                0x080000ec                . = ALIGN (0x4)
+
+.text           0x080000ec      0x234
+                0x080000ec                . = ALIGN (0x4)
+ *(.text)
+ .text          0x080000ec       0x4c Src/main.o
+                0x080000ec                delay
+                0x0800010c                main
+ .text          0x08000138      0x188 Inc/gpio.o
+                0x08000138                GPIO_EnableClock
+                0x080001e0                GPIO_SetPin
+                0x0800025a                GPIO_WritePin
+                0x08000298                GPIO_Toggle
+ .text          0x080002c0       0x60 startup.o
+                0x080002c0                RTC_Alarm_IRQHandler
+                0x080002c0                EXTI2_IRQHandler
+                0x080002c0                SVCall_Handler
+                0x080002c0                TIM1_CC_IRQHandler
+                0x080002c0                Systick_Handler
+                0x080002c0                Hardfault_Handler
+                0x080002c0                PVD_IRQHandler
+                0x080002c0                PendSV_Handler
+                0x080002c0                NMI_Handler
+                0x080002c0                EXTI3_IRQHandler
+                0x080002c0                EXTI0_IRQHandler
+                0x080002c0                I2C2_EV_IRQHandler
+                0x080002c0                UsageFault_Handler
+                0x080002c0                ADC1_2_IRQHandler
+                0x080002c0                SPI1_IRQHandler
+                0x080002c0                TAMPER_IRQHandler
+                0x080002c0                DMA1_Channel4_IRQHandler
+                0x080002c0                USART3_IRQHandler
+                0x080002c0                RTC_IRQHandler
+                0x080002c0                DMA1_Channel7_IRQHandler
+                0x080002c0                I2C1_ER_IRQHandler
+                0x080002c0                CAN1_RX1_IRQHandler
+                0x080002c0                TIM4_IRQHandler
+                0x080002c0                I2C1_EV_IRQHandler
+                0x080002c0                DMA1_Channel6_IRQHandler
+                0x080002c0                TIM3_IRQHandler
+                0x080002c0                RCC_IRQHandler
+                0x080002c0                TIM1_TRG_COM_IRQHandler
+                0x080002c0                DMA1_Channel1_IRQHandler
+                0x080002c0                Default_Handler
+                0x080002c0                EXTI15_10_IRQHandler
+                0x080002c0                EXTI9_5_IRQHandler
+                0x080002c0                SPI2_IRQHandler
+                0x080002c0                MemManage_Handler
+                0x080002c0                DMA1_Channel5_IRQHandler
+                0x080002c0                EXTI4_IRQHandler
+                0x080002c0                USB_LP_CAN1_RX0_IRQHandler
+                0x080002c0                USB_HP_CAN1_TX_IRQHandler
+                0x080002c0                DMA1_Channel3_IRQHandler
+                0x080002c0                TIM1_UP_IRQHandler
+                0x080002c0                WWDG_IRQHandler
+                0x080002c0                TIM2_IRQHandler
+                0x080002c0                TIM1_BRK_IRQHandler
+                0x080002c0                EXTI1_IRQHandler
+                0x080002c0                USART2_IRQHandler
+                0x080002c0                I2C2_ER_IRQHandler
+                0x080002c0                DMA1_Channel2_IRQHandler
+                0x080002c0                CAN1_SCE_IRQHandler
+                0x080002c0                FLASH_IRQHandler
+                0x080002c0                BusFault_Handler
+                0x080002c0                USART1_IRQHandler
+                0x080002c0                USBWakeUp_IRQHandler
+                0x080002c6                Reset_Handler
+ *(.text*)
+ *(.glue_7)
+ .glue_7        0x08000320        0x0 linker stubs
+ *(.glue_7t)
+ .glue_7t       0x08000320        0x0 linker stubs
+ *(.eh_frame)
+ *(.init)
+ *(.fini)
+                0x08000320                . = ALIGN (0x4)
+                0x08000320                _etext = .
+
+.vfp11_veneer   0x08000320        0x0
+ .vfp11_veneer  0x08000320        0x0 linker stubs
+
+.v4_bx          0x08000320        0x0
+ .v4_bx         0x08000320        0x0 linker stubs
+
+.iplt           0x08000320        0x0
+ .iplt          0x08000320        0x0 Src/main.o
+
+.rel.dyn        0x08000320        0x0
+ .rel.iplt      0x08000320        0x0 Src/main.o
+
+.rodata         0x08000320        0x0
+                0x08000320                . = ALIGN (0x4)
+ *(.rodata)
+ *(.rodata*)
+                0x08000320                . = ALIGN (0x4)
+
+.ARM.extab      0x08000320        0x0
+                0x08000320                . = ALIGN (0x4)
+ *(.ARM.extab* .gnu.linkonce.armextab.*)
+                0x08000320                . = ALIGN (0x4)
+
+.ARM            0x08000320        0x0
+                0x08000320                . = ALIGN (0x4)
+                0x08000320                __exidx_start = .
+ *(.ARM.exidx*)
+                0x08000320                __exidx_end = .
+                0x08000320                . = ALIGN (0x4)
+
+.preinit_array  0x08000320        0x0
+                0x08000320                . = ALIGN (0x4)
+                [!provide]                PROVIDE (__preinit_array_start = .)
+ *(.preinit_array*)
+                [!provide]                PROVIDE (__preinit_array_end = .)
+                0x08000320                . = ALIGN (0x4)
+
+.init_array     0x08000320        0x0
+                0x08000320                . = ALIGN (0x4)
+                [!provide]                PROVIDE (__init_array_start = .)
+ *(SORT_BY_NAME(.init_array.*))
+ *(.init_array*)
+                [!provide]                PROVIDE (__init_array_end = .)
+                0x08000320                . = ALIGN (0x4)
+
+.fini_array     0x08000320        0x0
+                0x08000320                . = ALIGN (0x4)
+                [!provide]                PROVIDE (__fini_array_start = .)
+ *(SORT_BY_NAME(.fini_array.*))
+ *(.fini_array*)
+                [!provide]                PROVIDE (__fini_array_end = .)
+                0x08000320                . = ALIGN (0x4)
+                0x08000320                _sidata = LOADADDR (.data)
+
+.data           0x20000000        0x0 load address 0x08000320
+                0x20000000                . = ALIGN (0x4)
+                0x20000000                _sdata = .
+ *(.data)
+ .data          0x20000000        0x0 Src/main.o
+ .data          0x20000000        0x0 Inc/gpio.o
+ .data          0x20000000        0x0 startup.o
+ *(.data*)
+ *(.RamFunc)
+ *(.RamFunc*)
+                0x20000000                . = ALIGN (0x4)
+                0x20000000                _edata = .
+
+.igot.plt       0x20000000        0x0 load address 0x08000320
+ .igot.plt      0x20000000        0x0 Src/main.o
+                0x20000000                . = ALIGN (0x4)
+
+.bss            0x20000000        0x0 load address 0x08000320
+                0x20000000                _sbss = .
+                0x20000000                __bss_start__ = _sbss
+ *(.bss)
+ .bss           0x20000000        0x0 Src/main.o
+ .bss           0x20000000        0x0 Inc/gpio.o
+ .bss           0x20000000        0x0 startup.o
+ *(.bss*)
+ *(COMMON)
+                0x20000000                _ebss = .
+                0x20000000                __bss_end__ = _ebss
+
+._user_heap_stack
+                0x20000000      0x600 load address 0x08000320
+                0x20000000                . = ALIGN (0x8)
+                [!provide]                PROVIDE (end = .)
+                [!provide]                PROVIDE (_end = .)
+                0x20000200                . = (. + _Min_Heap_Size)
+ *fill*         0x20000000      0x200 
+                0x20000600                . = (. + _Min_Stack_Size)
+ *fill*         0x20000200      0x400 
+                0x20000600                . = ALIGN (0x8)
+
+/DISCARD/
+ libc.a(*)
+ libm.a(*)
+ libgcc.a(*)
+
+.ARM.attributes
+                0x00000000       0x2d
+ *(.ARM.attributes)
+ .ARM.attributes
+                0x00000000       0x2d Src/main.o
+ .ARM.attributes
+                0x0000002d       0x2d Inc/gpio.o
+ .ARM.attributes
+                0x0000005a       0x2d startup.o
+OUTPUT(project.elf elf32-littlearm)
+LOAD linker stubs
+LOAD c:/program files (x86)/gnu arm embedded toolchain/10 2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib\libc.a
+LOAD c:/program files (x86)/gnu arm embedded toolchain/10 2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib\libm.a
+LOAD c:/program files (x86)/gnu arm embedded toolchain/10 2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1\libgcc.a
+
+.debug_info     0x00000000      0x588
+ .debug_info    0x00000000      0x165 Src/main.o
+ .debug_info    0x00000165      0x2e8 Inc/gpio.o
+ .debug_info    0x0000044d      0x13b startup.o
+
+.debug_abbrev   0x00000000      0x261
+ .debug_abbrev  0x00000000       0xc3 Src/main.o
+ .debug_abbrev  0x000000c3       0xdd Inc/gpio.o
+ .debug_abbrev  0x000001a0       0xc1 startup.o
+
+.debug_aranges  0x00000000       0x60
+ .debug_aranges
+                0x00000000       0x20 Src/main.o
+ .debug_aranges
+                0x00000020       0x20 Inc/gpio.o
+ .debug_aranges
+                0x00000040       0x20 startup.o
+
+.debug_line     0x00000000      0x45c
+ .debug_line    0x00000000      0x156 Src/main.o
+ .debug_line    0x00000156      0x1c2 Inc/gpio.o
+ .debug_line    0x00000318      0x144 startup.o
+
+.debug_str      0x00000000      0x357
+ .debug_str     0x00000000      0x1f8 Src/main.o
+                                0x235 (size before relaxing)
+ .debug_str     0x000001f8       0xf7 Inc/gpio.o
+                                0x318 (size before relaxing)
+ .debug_str     0x000002ef       0x68 startup.o
+                                0x192 (size before relaxing)
+
+.comment        0x00000000       0x49
+ .comment       0x00000000       0x49 Src/main.o
+                                 0x4a (size before relaxing)
+ .comment       0x00000049       0x4a Inc/gpio.o
+ .comment       0x00000049       0x4a startup.o
+
+.debug_frame    0x00000000      0x14c
+ .debug_frame   0x00000000       0x54 Src/main.o
+ .debug_frame   0x00000054       0xb0 Inc/gpio.o
+ .debug_frame   0x00000104       0x48 startup.o
