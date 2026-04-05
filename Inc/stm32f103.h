@@ -1,5 +1,5 @@
-#ifndef stm32f103_h
-#define stm32f103_h
+#ifndef STM32F103_H
+#define STM32F103_H
 #include <stdint.h>
 // Dia chi goc
 #define PERIPH_BASE 0x40000000UL
