@@ -52,24 +52,26 @@ To build and flash this project, you will need the following tools:
    cd Bare_Metal_Coding_Stm32
    ```
 2. Build the project:
-   ````bash
+   ```bash
    make all
+   ```
    or
    ```bash
    mingw32-make
-   ````
+   ```
 3. Flash the firmware to the board:
-   ````bash
+   ```bash
    make flash
+   ```
    or
    ```bash
    mingw32-make flash
-   ````
+   ```
 
 ## Developer's Diary
 
 I document my daily progress, bugs encountered, and architectural concepts learned on Notion. Feel free to follow along with my thought process:
-[text](https://www.notion.so/Bare-metal-coding-32f984656d2c80aa8312f05e2aaa0d0b?source=copy_link)
+[Bare-metal-coding](https://www.notion.so/Bare-metal-coding-32f984656d2c80aa8312f05e2aaa0d0b?source=copy_link)
 
 ## Philosophy
 

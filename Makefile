@@ -1,7 +1,7 @@
 TARGET = project
 BUILD_DIR = Build
 # Toolchain 
-CC = arm-none-eabi-gcc
+CC = arm-none-eabi-gcc 
 OBJCOPY = arm-none-eabi-objcopy 
 SZ = arm-none-eabi-size
 # Flags
