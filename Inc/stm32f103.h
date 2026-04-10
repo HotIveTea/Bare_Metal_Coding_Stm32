@@ -23,45 +23,71 @@
 #define USART3_PERIPH_BASE (APB1PERIPH_BASE + 0x4800UL)
 #define UART4_PERIPH_BASE (APB1PERIPH_BASE + 0x4C00UL)
 #define UART5_PERIPH_BASE (APB1PERIPH_BASE + 0x5000UL)
-
+// TIMER's address
+#define TIMER1_PERIPH_BASE (APB2PERIPH_BASE + 0x2C00UL)
+#define TIMER2_PERIPH_BASE (APB1PERIPH_BASE + 0x0000UL)
+#define TIMER3_PERIPH_BASE (APB1PERIPH_BASE + 0x0400UL)
 typedef struct
 {
-    volatile uint32_t RCC_CR;
-    volatile uint32_t RCC_CFGR;
-    volatile uint32_t RCC_CIR;
-    volatile uint32_t RCC_APB2RSTR;
-    volatile uint32_t RCC_APB1RSTR;
-    volatile uint32_t RCC_AHBENR;
-    volatile uint32_t RCC_APB2ENR;
-    volatile uint32_t RCC_APB1ENR;
-    volatile uint32_t RCC_BDCR;
-    volatile uint32_t RCC_CSR;
-    volatile uint32_t RCC_AHBRSTR;
-    volatile uint32_t RCC_CFGR2;
+    volatile uint32_t CR;
+    volatile uint32_t CFGR;
+    volatile uint32_t CIR;
+    volatile uint32_t APB2RSTR;
+    volatile uint32_t APB1RSTR;
+    volatile uint32_t AHBENR;
+    volatile uint32_t APB2ENR;
+    volatile uint32_t APB1ENR;
+    volatile uint32_t BDCR;
+    volatile uint32_t CSR;
+    volatile uint32_t AHBRSTR;
+    volatile uint32_t CFGR2;
 } RCC_TypeDef;
 
 typedef struct
 {
-    volatile uint32_t GPIOx_CRL;
-    volatile uint32_t GPIOx_CRH;
-    volatile uint32_t GPIOx_IDR;
-    volatile uint32_t GPIOx_ODR;
-    volatile uint32_t GPIOx_BSRR;
-    volatile uint32_t GPIOx_BRR;
-    volatile uint32_t GPIOx_LCKR;
+    volatile uint32_t CRL;
+    volatile uint32_t CRH;
+    volatile uint32_t IDR;
+    volatile uint32_t ODR;
+    volatile uint32_t BSRR;
+    volatile uint32_t BRR;
+    volatile uint32_t LCKR;
 } GPIO_TypeDef;
 
 typedef struct
 {
-    volatile uint32_t USARTx_SR;
-    volatile uint32_t USARTx_DR;
-    volatile uint32_t USARTx_BRR;
-    volatile uint32_t USARTx_CR1;
-    volatile uint32_t USARTx_CR2;
-    volatile uint32_t USARTx_CR3;
-    volatile uint32_t USARTx_GTPR;
+    volatile uint32_t SR;
+    volatile uint32_t DR;
+    volatile uint32_t BRR;
+    volatile uint32_t CR1;
+    volatile uint32_t CR2;
+    volatile uint32_t CR3;
+    volatile uint32_t GTPR;
 } USART_TypeDef;
 
+typedef struct
+{
+    volatile uint32_t CR1;
+    volatile uint32_t CR2;
+    volatile uint32_t SMCR;
+    volatile uint32_t DIER;
+    volatile uint32_t SR;
+    volatile uint32_t EGR;
+    volatile uint32_t CCMR1;
+    volatile uint32_t CCMR2;
+    volatile uint32_t CCER;
+    volatile uint32_t CNT;
+    volatile uint32_t PSC;
+    volatile uint32_t ARR;
+    uint32_t re;
+    volatile uint32_t CCR1;
+    volatile uint32_t CCR2;
+    volatile uint32_t CCR3;
+    volatile uint32_t CCR4;
+    uint32_t re1;
+    volatile uint32_t DCR;
+    volatile uint32_t DMAR;
+} TIMER_TypeDef;
 #define RCC ((RCC_TypeDef *)RCC_PERIPH_BASE)
 
 #define GPIOA ((GPIO_TypeDef *)GPIOA_PERIPH_BASE)
@@ -78,4 +104,7 @@ typedef struct
 #define UART4 ((USART_TypeDef *)UART4_PERIPH_BASE);
 #define UART5 ((USART_TypeDef *)UART5_PERIPH_BASE);
 
+#define TIM1 ((TIMER_TypeDef *)TIMER1_PERIPH_BASE);
+#define TIM2 ((TIMER_TypeDef *)TIMER2_PERIPH_BASE);
+#define TIM3 ((TIMER_TypeDef *)TIMER3_PERIPH_BASE);
 #endif
