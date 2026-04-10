@@ -47,6 +47,10 @@ void GPIO_WritePin(GPIO_TypeDef *GPIOx, uint8_t pin, uint8_t state)
         GPIOx->GPIOx_BRR = (1 << pin);
     }
 }
+uint8_t GPIO_ReadPin(GPIO_TypeDef *GPIOx, uint8_t pin)
+{
+    return ((GPIOx->GPIOx_IDR >> pin) & 1);
+}
 void GPIO_Toggle(GPIO_TypeDef *GPIOx, uint8_t pin)
 {
     GPIOx->GPIOx_ODR ^= (1 << pin);

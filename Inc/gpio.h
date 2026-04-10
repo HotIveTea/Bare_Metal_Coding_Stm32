@@ -17,6 +17,6 @@ typedef enum
 void GPIO_EnableClock(GPIO_TypeDef *GPIOx);
 void GPIO_SetPin(GPIO_TypeDef *GPIOx, uint8_t pin, GPIO_MODE_Typedef mode);
 void GPIO_WritePin(GPIO_TypeDef *GPIOx, uint8_t pin, uint8_t state);
-uint8_t GPIO_ReadPin(GPIO_TypeDef *GPIOx, uint8_t);
+uint8_t GPIO_ReadPin(GPIO_TypeDef *GPIOx, uint8_t pin);
 void GPIO_Toggle(GPIO_TypeDef *GPIOx, uint8_t pin);
 #endif
