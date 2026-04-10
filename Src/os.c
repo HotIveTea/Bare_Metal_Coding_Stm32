@@ -110,13 +110,14 @@ __attribute__((naked)) void SVCall_Handler(void)
         "LDR R1, [R0] \n"          // Take TCB of the first task
         "LDR R0, [R1] \n"          // Take the Stack Pointer of this task (tcb->sp)
 
-        "LDMIA R0!, {R4-R11} \n" // Take data from 8 registers (R4-R11) and put into SRAM
+        "LDMIA R0!, {R4-R11} \n" // Load data from SRAM and put into 8 registers (R4-R11)
         "MSR PSP, R0 \n"         // Update the current stack's top into PSP regsiter
 
-        "ORR LR, LR, #0x04 \n" // Set bit 2 to 1 in LR(Link Register) register
+        "ORR LR, LR, #0x04 \n" // Set bit 2 to 1 in LR (Link Register) register
 
-        "CPSIE I \n"
-        "BX LR \n");
+        "CPSIE I \n" // Enable interrupt
+        "BX LR \n"   // Branch Exchange
+    );
 }
 void OS_Start(void)
 {

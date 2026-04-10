@@ -14,22 +14,22 @@ CFLAGS += -IInc
 LDSCRIPT = stm32f103.ld
 LDFLAGS = $(MCU) -T$(LDSCRIPT) -nostdlib -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
 C_SOURCES = $(wildcard Src/*.c)
-OBJECTS = $(patsubst Src/%.c, $(BUILD_DIR)/%.o, $(C_SOURCES)) # Set các file .c thành file .o
-all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin# file bin va file hex
-# 1. Liên kết các file .o thành file chạy .elf
+OBJECTS = $(patsubst Src/%.c, $(BUILD_DIR)/%.o, $(C_SOURCES)) # Set file .c to file .o
+all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin# file bin and file hex
+# 1. Link file.o to file.elf
 $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) | $(BUILD_DIR)
 		$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 		$(SZ) $@
-# 2. Tạo file .hex từ file .elf
+# 2. Make file .hex from file .elf
 $(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 		$(OBJCOPY) -O ihex $< $@
-# 3. Tạo file .bin từ file .elf
+# 3. Make file .bin from file .elf
 $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 		$(OBJCOPY) -O binary -S $< $@
-# 4. Biên dịch từng file .c thành file .o
+# 4. Complie each file .c to file .o
 $(BUILD_DIR)/%.o: Src/%.c | $(BUILD_DIR)
 		$(CC) -c $(CFLAGS) $< -o $@
-# 5. Tự động tạo thư mục Build nếu chưa có
+# 5. Automatic create Build folder if there isn't
 $(BUILD_DIR):
 		if not exist $(BUILD_DIR) mkdir $(BUILD_DIR)
 .PHONY: clean flash
