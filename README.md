@@ -20,6 +20,8 @@ By building everything from the ground up, this project serves as a foundational
 - **Linker Scripts (`.ld`):** Design custom linker scripts to precisely control memory allocation for Flash and SRAM.
 - **Build Systems:** Master `Makefile` to compile, assemble, and link the project using the GNU Arm Embedded Toolchain.
 - **Register-Level Programming:** Control GPIOs, Timers, and communication protocols by directly manipulating memory-mapped registers.
+- **Learning how to make your own RTOS in STM32** Understanding STM32's architecture, how to use
+  registers like PendSV, Systick and learn how to calculate TICK for scheduling tasks.
 
 ## Project Structure
 
@@ -71,7 +73,9 @@ To build and flash this project, you will need the following tools:
 ## Developer's Diary
 
 I document my daily progress, bugs encountered, and architectural concepts learned on Notion. Feel free to follow along with my thought process:
-[Bare-metal-coding](https://www.notion.so/Bare-metal-coding-32f984656d2c80aa8312f05e2aaa0d0b?source=copy_link)
+[Bare-metal-coding](https://www.notion.so/Bare-metal-programming-155984656d2c836f813c01230064508a?source=copy_link)
+I also document my daily progress, bugs and approachs about RTOS in Notion.
+[RTOS from scratch](https://www.notion.so/RTOS-from-scratch-English-ver-33b984656d2c806c9579eb40ed18872a?source=copy_link)
 
 ## Philosophy
 
