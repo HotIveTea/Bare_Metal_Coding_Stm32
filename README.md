@@ -80,3 +80,4 @@ I also document my daily progress, bugs and approachs about RTOS in Notion.
 ## Philosophy
 
 Bare-metal programming can be unforgiving, but it is deeply rewarding. A hard fault or a segmentation fault is just a stepping stone to fully mastering embedded systems. Keep tinkering, keep breaking things, and keep learning.
+   

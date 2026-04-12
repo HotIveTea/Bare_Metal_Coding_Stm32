@@ -4,18 +4,20 @@ Discarded input sections
  .data          0x00000000        0x0 Build/gpio.o
  .bss           0x00000000        0x0 Build/gpio.o
  .data          0x00000000        0x0 Build/main.o
- .bss           0x00000000        0x0 Build/main.o
+ .data          0x00000000        0x0 Build/os.o
  .data          0x00000000        0x0 Build/startup.o
  .bss           0x00000000        0x0 Build/startup.o
+ .data          0x00000000        0x0 Build/timer.o
+ .bss           0x00000000        0x0 Build/timer.o
  .text          0x00000000      0x218 Build/usart.o
  .data          0x00000000        0x0 Build/usart.o
  .bss           0x00000000        0x0 Build/usart.o
- .debug_info    0x00000000      0x34e Build/usart.o
- .debug_abbrev  0x00000000      0x117 Build/usart.o
+ .debug_info    0x00000000      0x34b Build/usart.o
+ .debug_abbrev  0x00000000      0x128 Build/usart.o
  .debug_aranges
                 0x00000000       0x20 Build/usart.o
  .debug_line    0x00000000      0x1d3 Build/usart.o
- .debug_str     0x00000000      0x3d4 Build/usart.o
+ .debug_str     0x00000000      0x314 Build/usart.o
  .comment       0x00000000       0x4a Build/usart.o
  .debug_frame   0x00000000       0xa8 Build/usart.o
  .ARM.attributes
@@ -32,7 +34,9 @@ Linker script and memory map
 
 LOAD Build/gpio.o
 LOAD Build/main.o
+LOAD Build/os.o
 LOAD Build/startup.o
+LOAD Build/timer.o
 LOAD Build/usart.o
                 0x20005000                _estack = (ORIGIN (SRAM) + LENGTH (SRAM))
                 0x00000200                _Min_Heap_Size = 0x200
@@ -45,137 +49,154 @@ LOAD Build/usart.o
                 0x08000000                isr_vector
                 0x080000ec                . = ALIGN (0x4)
 
-.text           0x080000ec      0x234
+.text           0x080000ec      0x778
                 0x080000ec                . = ALIGN (0x4)
  *(.text)
- .text          0x080000ec      0x188 Build/gpio.o
+ .text          0x080000ec      0x1b0 Build/gpio.o
                 0x080000ec                GPIO_EnableClock
                 0x08000194                GPIO_SetPin
                 0x0800020e                GPIO_WritePin
-                0x0800024c                GPIO_Toggle
- .text          0x08000274       0x4c Build/main.o
-                0x08000274                delay
-                0x08000294                main
- .text          0x080002c0       0x60 Build/startup.o
-                0x080002c0                RTC_Alarm_IRQHandler
-                0x080002c0                EXTI2_IRQHandler
-                0x080002c0                SVCall_Handler
-                0x080002c0                TIM1_CC_IRQHandler
-                0x080002c0                Systick_Handler
-                0x080002c0                Hardfault_Handler
-                0x080002c0                PVD_IRQHandler
-                0x080002c0                PendSV_Handler
-                0x080002c0                NMI_Handler
-                0x080002c0                EXTI3_IRQHandler
-                0x080002c0                EXTI0_IRQHandler
-                0x080002c0                I2C2_EV_IRQHandler
-                0x080002c0                UsageFault_Handler
-                0x080002c0                ADC1_2_IRQHandler
-                0x080002c0                SPI1_IRQHandler
-                0x080002c0                TAMPER_IRQHandler
-                0x080002c0                DMA1_Channel4_IRQHandler
-                0x080002c0                USART3_IRQHandler
-                0x080002c0                RTC_IRQHandler
-                0x080002c0                DMA1_Channel7_IRQHandler
-                0x080002c0                I2C1_ER_IRQHandler
-                0x080002c0                CAN1_RX1_IRQHandler
-                0x080002c0                TIM4_IRQHandler
-                0x080002c0                I2C1_EV_IRQHandler
-                0x080002c0                DMA1_Channel6_IRQHandler
-                0x080002c0                TIM3_IRQHandler
-                0x080002c0                RCC_IRQHandler
-                0x080002c0                TIM1_TRG_COM_IRQHandler
-                0x080002c0                DMA1_Channel1_IRQHandler
-                0x080002c0                Default_Handler
-                0x080002c0                EXTI15_10_IRQHandler
-                0x080002c0                EXTI9_5_IRQHandler
-                0x080002c0                SPI2_IRQHandler
-                0x080002c0                MemManage_Handler
-                0x080002c0                DMA1_Channel5_IRQHandler
-                0x080002c0                EXTI4_IRQHandler
-                0x080002c0                USB_LP_CAN1_RX0_IRQHandler
-                0x080002c0                USB_HP_CAN1_TX_IRQHandler
-                0x080002c0                DMA1_Channel3_IRQHandler
-                0x080002c0                TIM1_UP_IRQHandler
-                0x080002c0                WWDG_IRQHandler
-                0x080002c0                TIM2_IRQHandler
-                0x080002c0                TIM1_BRK_IRQHandler
-                0x080002c0                EXTI1_IRQHandler
-                0x080002c0                USART2_IRQHandler
-                0x080002c0                I2C2_ER_IRQHandler
-                0x080002c0                DMA1_Channel2_IRQHandler
-                0x080002c0                CAN1_SCE_IRQHandler
-                0x080002c0                FLASH_IRQHandler
-                0x080002c0                BusFault_Handler
-                0x080002c0                USART1_IRQHandler
-                0x080002c0                USBWakeUp_IRQHandler
-                0x080002c6                Reset_Handler
+                0x0800024c                GPIO_ReadPin
+                0x08000274                GPIO_Toggle
+ .text          0x0800029c      0x10c Build/main.o
+                0x0800029c                delay
+                0x080002bc                Task1
+                0x080002d8                Task2
+                0x080002f4                main
+ .text          0x080003a8      0x1dc Build/os.o
+                0x080003a8                OS_TaskCreate
+                0x080004aa                OS_InitSysTick
+                0x080004e4                Systick_Handler
+                0x08000528                PendSV_Handler
+                0x08000550                SVCall_Handler
+                0x08000568                OS_Start
+ .text          0x08000584       0x60 Build/startup.o
+                0x08000584                RTC_Alarm_IRQHandler
+                0x08000584                EXTI2_IRQHandler
+                0x08000584                TIM1_CC_IRQHandler
+                0x08000584                Hardfault_Handler
+                0x08000584                PVD_IRQHandler
+                0x08000584                NMI_Handler
+                0x08000584                EXTI3_IRQHandler
+                0x08000584                EXTI0_IRQHandler
+                0x08000584                I2C2_EV_IRQHandler
+                0x08000584                UsageFault_Handler
+                0x08000584                ADC1_2_IRQHandler
+                0x08000584                SPI1_IRQHandler
+                0x08000584                TAMPER_IRQHandler
+                0x08000584                DMA1_Channel4_IRQHandler
+                0x08000584                USART3_IRQHandler
+                0x08000584                RTC_IRQHandler
+                0x08000584                DMA1_Channel7_IRQHandler
+                0x08000584                I2C1_ER_IRQHandler
+                0x08000584                CAN1_RX1_IRQHandler
+                0x08000584                TIM4_IRQHandler
+                0x08000584                I2C1_EV_IRQHandler
+                0x08000584                DMA1_Channel6_IRQHandler
+                0x08000584                TIM3_IRQHandler
+                0x08000584                RCC_IRQHandler
+                0x08000584                TIM1_TRG_COM_IRQHandler
+                0x08000584                DMA1_Channel1_IRQHandler
+                0x08000584                Default_Handler
+                0x08000584                EXTI15_10_IRQHandler
+                0x08000584                EXTI9_5_IRQHandler
+                0x08000584                SPI2_IRQHandler
+                0x08000584                MemManage_Handler
+                0x08000584                DMA1_Channel5_IRQHandler
+                0x08000584                EXTI4_IRQHandler
+                0x08000584                USB_LP_CAN1_RX0_IRQHandler
+                0x08000584                USB_HP_CAN1_TX_IRQHandler
+                0x08000584                DMA1_Channel3_IRQHandler
+                0x08000584                TIM1_UP_IRQHandler
+                0x08000584                WWDG_IRQHandler
+                0x08000584                TIM2_IRQHandler
+                0x08000584                TIM1_BRK_IRQHandler
+                0x08000584                EXTI1_IRQHandler
+                0x08000584                USART2_IRQHandler
+                0x08000584                I2C2_ER_IRQHandler
+                0x08000584                DMA1_Channel2_IRQHandler
+                0x08000584                CAN1_SCE_IRQHandler
+                0x08000584                FLASH_IRQHandler
+                0x08000584                BusFault_Handler
+                0x08000584                USART1_IRQHandler
+                0x08000584                USBWakeUp_IRQHandler
+                0x0800058a                Reset_Handler
+ .text          0x080005e4      0x280 Build/timer.o
+                0x080005e4                TIM_Init
+                0x0800066c                TIM_Start
+                0x0800068a                TIM_DelayUs
+                0x080006b4                TIM_DelayMs
+                0x080006e8                TIM_Stop
+                0x08000706                TIM_GetCounter
+                0x0800071e                TIM_SetCounter
+                0x0800073a                TIM_PWM_Init
+                0x08000808                TIM_PWM_SetDuty
  *(.text*)
  *(.glue_7)
- .glue_7        0x08000320        0x0 linker stubs
+ .glue_7        0x08000864        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x08000320        0x0 linker stubs
+ .glue_7t       0x08000864        0x0 linker stubs
  *(.eh_frame)
  *(.init)
  *(.fini)
-                0x08000320                . = ALIGN (0x4)
-                0x08000320                _etext = .
+                0x08000864                . = ALIGN (0x4)
+                0x08000864                _etext = .
 
-.vfp11_veneer   0x08000320        0x0
- .vfp11_veneer  0x08000320        0x0 linker stubs
+.vfp11_veneer   0x08000864        0x0
+ .vfp11_veneer  0x08000864        0x0 linker stubs
 
-.v4_bx          0x08000320        0x0
- .v4_bx         0x08000320        0x0 linker stubs
+.v4_bx          0x08000864        0x0
+ .v4_bx         0x08000864        0x0 linker stubs
 
-.iplt           0x08000320        0x0
- .iplt          0x08000320        0x0 Build/main.o
+.iplt           0x08000864        0x0
+ .iplt          0x08000864        0x0 Build/main.o
 
-.rel.dyn        0x08000320        0x0
- .rel.iplt      0x08000320        0x0 Build/main.o
+.rel.dyn        0x08000864        0x0
+ .rel.iplt      0x08000864        0x0 Build/main.o
 
-.rodata         0x08000320        0x0
-                0x08000320                . = ALIGN (0x4)
+.rodata         0x08000864        0x0
+                0x08000864                . = ALIGN (0x4)
  *(.rodata)
  *(.rodata*)
-                0x08000320                . = ALIGN (0x4)
+                0x08000864                . = ALIGN (0x4)
 
-.ARM.extab      0x08000320        0x0
-                0x08000320                . = ALIGN (0x4)
+.ARM.extab      0x08000864        0x0
+                0x08000864                . = ALIGN (0x4)
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x08000320                . = ALIGN (0x4)
+                0x08000864                . = ALIGN (0x4)
 
-.ARM            0x08000320        0x0
-                0x08000320                . = ALIGN (0x4)
-                0x08000320                __exidx_start = .
+.ARM            0x08000864        0x0
+                0x08000864                . = ALIGN (0x4)
+                0x08000864                __exidx_start = .
  *(.ARM.exidx*)
-                0x08000320                __exidx_end = .
-                0x08000320                . = ALIGN (0x4)
+                0x08000864                __exidx_end = .
+                0x08000864                . = ALIGN (0x4)
 
-.preinit_array  0x08000320        0x0
-                0x08000320                . = ALIGN (0x4)
+.preinit_array  0x08000864        0x0
+                0x08000864                . = ALIGN (0x4)
                 [!provide]                PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
                 [!provide]                PROVIDE (__preinit_array_end = .)
-                0x08000320                . = ALIGN (0x4)
+                0x08000864                . = ALIGN (0x4)
 
-.init_array     0x08000320        0x0
-                0x08000320                . = ALIGN (0x4)
+.init_array     0x08000864        0x0
+                0x08000864                . = ALIGN (0x4)
                 [!provide]                PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
                 [!provide]                PROVIDE (__init_array_end = .)
-                0x08000320                . = ALIGN (0x4)
+                0x08000864                . = ALIGN (0x4)
 
-.fini_array     0x08000320        0x0
-                0x08000320                . = ALIGN (0x4)
+.fini_array     0x08000864        0x0
+                0x08000864                . = ALIGN (0x4)
                 [!provide]                PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
                 [!provide]                PROVIDE (__fini_array_end = .)
-                0x08000320                . = ALIGN (0x4)
-                0x08000320                _sidata = LOADADDR (.data)
+                0x08000864                . = ALIGN (0x4)
+                0x08000864                _sidata = LOADADDR (.data)
 
-.data           0x20000000        0x0 load address 0x08000320
+.data           0x20000000        0x0 load address 0x08000864
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _sdata = .
  *(.data)
@@ -185,29 +206,37 @@ LOAD Build/usart.o
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _edata = .
 
-.igot.plt       0x20000000        0x0 load address 0x08000320
+.igot.plt       0x20000000        0x0 load address 0x08000864
  .igot.plt      0x20000000        0x0 Build/main.o
                 0x20000000                . = ALIGN (0x4)
 
-.bss            0x20000000        0x0 load address 0x08000320
+.bss            0x20000000      0x330 load address 0x08000864
                 0x20000000                _sbss = .
                 0x20000000                __bss_start__ = _sbss
  *(.bss)
+ .bss           0x20000000      0x328 Build/main.o
+                0x20000000                task1_stack
+                0x20000190                task2_stack
+                0x20000320                tcb1
+                0x20000324                tcb2
+ .bss           0x20000328        0x8 Build/os.o
+                0x20000328                current_task
+                0x2000032c                next_task
  *(.bss*)
  *(COMMON)
-                0x20000000                _ebss = .
-                0x20000000                __bss_end__ = _ebss
+                0x20000330                _ebss = .
+                0x20000330                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x20000000      0x600 load address 0x08000320
-                0x20000000                . = ALIGN (0x8)
+                0x20000330      0x600 load address 0x08000864
+                0x20000330                . = ALIGN (0x8)
                 [!provide]                PROVIDE (end = .)
                 [!provide]                PROVIDE (_end = .)
-                0x20000200                . = (. + _Min_Heap_Size)
- *fill*         0x20000000      0x200 
-                0x20000600                . = (. + _Min_Stack_Size)
- *fill*         0x20000200      0x400 
-                0x20000600                . = ALIGN (0x8)
+                0x20000530                . = (. + _Min_Heap_Size)
+ *fill*         0x20000330      0x200 
+                0x20000930                . = (. + _Min_Stack_Size)
+ *fill*         0x20000530      0x400 
+                0x20000930                . = ALIGN (0x8)
 
 /DISCARD/
  libc.a(*)
@@ -222,54 +251,76 @@ LOAD Build/usart.o
  .ARM.attributes
                 0x0000002d       0x2d Build/main.o
  .ARM.attributes
-                0x0000005a       0x2d Build/startup.o
+                0x0000005a       0x2d Build/os.o
+ .ARM.attributes
+                0x00000087       0x2d Build/startup.o
+ .ARM.attributes
+                0x000000b4       0x2d Build/timer.o
 OUTPUT(Build/project.elf elf32-littlearm)
 LOAD linker stubs
 LOAD c:/program files (x86)/gnu arm embedded toolchain/10 2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc.a
 LOAD c:/program files (x86)/gnu arm embedded toolchain/10 2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libm.a
 LOAD c:/program files (x86)/gnu arm embedded toolchain/10 2021.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v7-m/nofp\libgcc.a
 
-.debug_info     0x00000000      0x5b8
- .debug_info    0x00000000      0x300 Build/gpio.o
- .debug_info    0x00000300      0x17d Build/main.o
- .debug_info    0x0000047d      0x13b Build/startup.o
+.debug_info     0x00000000      0xe44
+ .debug_info    0x00000000      0x338 Build/gpio.o
+ .debug_info    0x00000338      0x3a1 Build/main.o
+ .debug_info    0x000006d9      0x1c4 Build/os.o
+ .debug_info    0x0000089d      0x13b Build/startup.o
+ .debug_info    0x000009d8      0x46c Build/timer.o
 
-.debug_abbrev   0x00000000      0x261
- .debug_abbrev  0x00000000       0xdd Build/gpio.o
- .debug_abbrev  0x000000dd       0xc3 Build/main.o
- .debug_abbrev  0x000001a0       0xc1 Build/startup.o
+.debug_abbrev   0x00000000      0x548
+ .debug_abbrev  0x00000000      0x10c Build/gpio.o
+ .debug_abbrev  0x0000010c      0x143 Build/main.o
+ .debug_abbrev  0x0000024f      0x112 Build/os.o
+ .debug_abbrev  0x00000361       0xc1 Build/startup.o
+ .debug_abbrev  0x00000422      0x126 Build/timer.o
 
-.debug_aranges  0x00000000       0x60
+.debug_aranges  0x00000000       0xa0
  .debug_aranges
                 0x00000000       0x20 Build/gpio.o
  .debug_aranges
                 0x00000020       0x20 Build/main.o
  .debug_aranges
-                0x00000040       0x20 Build/startup.o
+                0x00000040       0x20 Build/os.o
+ .debug_aranges
+                0x00000060       0x20 Build/startup.o
+ .debug_aranges
+                0x00000080       0x20 Build/timer.o
 
-.debug_line     0x00000000      0x464
- .debug_line    0x00000000      0x1c6 Build/gpio.o
- .debug_line    0x000001c6      0x156 Build/main.o
- .debug_line    0x0000031c      0x148 Build/startup.o
+.debug_line     0x00000000      0x89a
+ .debug_line    0x00000000      0x1d3 Build/gpio.o
+ .debug_line    0x000001d3      0x1bd Build/main.o
+ .debug_line    0x00000390      0x1cc Build/os.o
+ .debug_line    0x0000055c      0x148 Build/startup.o
+ .debug_line    0x000006a4      0x1f6 Build/timer.o
 
-.debug_str      0x00000000      0x3cf
- .debug_str     0x00000000      0x347 Build/gpio.o
-                                0x38c (size before relaxing)
- .debug_str     0x00000347       0x1c Build/main.o
-                                0x2a9 (size before relaxing)
- .debug_str     0x00000363       0x6c Build/startup.o
+.debug_str      0x00000000      0x516
+ .debug_str     0x00000000      0x2db Build/gpio.o
+                                0x320 (size before relaxing)
+ .debug_str     0x000002db       0xa7 Build/main.o
+                                0x307 (size before relaxing)
+ .debug_str     0x00000382       0x9a Build/os.o
+                                0x1d4 (size before relaxing)
+ .debug_str     0x0000041c       0x6c Build/startup.o
                                 0x196 (size before relaxing)
+ .debug_str     0x00000488       0x8e Build/timer.o
+                                0x26d (size before relaxing)
 
 .comment        0x00000000       0x49
  .comment       0x00000000       0x49 Build/gpio.o
                                  0x4a (size before relaxing)
  .comment       0x00000049       0x4a Build/main.o
+ .comment       0x00000049       0x4a Build/os.o
  .comment       0x00000049       0x4a Build/startup.o
+ .comment       0x00000049       0x4a Build/timer.o
 
-.debug_frame    0x00000000      0x14c
- .debug_frame   0x00000000       0xb0 Build/gpio.o
- .debug_frame   0x000000b0       0x54 Build/main.o
- .debug_frame   0x00000104       0x48 Build/startup.o
+.debug_frame    0x00000000      0x3e0
+ .debug_frame   0x00000000       0xd8 Build/gpio.o
+ .debug_frame   0x000000d8       0x90 Build/main.o
+ .debug_frame   0x00000168       0xbc Build/os.o
+ .debug_frame   0x00000224       0x48 Build/startup.o
+ .debug_frame   0x0000026c      0x174 Build/timer.o
 
 Cross Reference Table
 
@@ -296,6 +347,7 @@ EXTI9_5_IRQHandler                                Build/startup.o
 FLASH_IRQHandler                                  Build/startup.o
 GPIO_EnableClock                                  Build/gpio.o
                                                   Build/main.o
+GPIO_ReadPin                                      Build/gpio.o
 GPIO_SetPin                                       Build/gpio.o
                                                   Build/usart.o
                                                   Build/main.o
@@ -309,16 +361,19 @@ I2C2_ER_IRQHandler                                Build/startup.o
 I2C2_EV_IRQHandler                                Build/startup.o
 MemManage_Handler                                 Build/startup.o
 NMI_Handler                                       Build/startup.o
+OS_InitSysTick                                    Build/os.o
+OS_Start                                          Build/os.o
+OS_TaskCreate                                     Build/os.o
 PVD_IRQHandler                                    Build/startup.o
-PendSV_Handler                                    Build/startup.o
+PendSV_Handler                                    Build/os.o
 RCC_IRQHandler                                    Build/startup.o
 RTC_Alarm_IRQHandler                              Build/startup.o
 RTC_IRQHandler                                    Build/startup.o
 Reset_Handler                                     Build/startup.o
 SPI1_IRQHandler                                   Build/startup.o
 SPI2_IRQHandler                                   Build/startup.o
-SVCall_Handler                                    Build/startup.o
-Systick_Handler                                   Build/startup.o
+SVCall_Handler                                    Build/os.o
+Systick_Handler                                   Build/os.o
 TAMPER_IRQHandler                                 Build/startup.o
 TIM1_BRK_IRQHandler                               Build/startup.o
 TIM1_CC_IRQHandler                                Build/startup.o
@@ -327,6 +382,22 @@ TIM1_UP_IRQHandler                                Build/startup.o
 TIM2_IRQHandler                                   Build/startup.o
 TIM3_IRQHandler                                   Build/startup.o
 TIM4_IRQHandler                                   Build/startup.o
+TIM_DelayMs                                       Build/timer.o
+                                                  Build/main.o
+TIM_DelayUs                                       Build/timer.o
+TIM_GetCounter                                    Build/timer.o
+TIM_Init                                          Build/timer.o
+                                                  Build/main.o
+TIM_PWM_Init                                      Build/timer.o
+                                                  Build/main.o
+TIM_PWM_SetDuty                                   Build/timer.o
+                                                  Build/main.o
+TIM_SetCounter                                    Build/timer.o
+TIM_Start                                         Build/timer.o
+                                                  Build/main.o
+TIM_Stop                                          Build/timer.o
+Task1                                             Build/main.o
+Task2                                             Build/main.o
 USART1_IRQHandler                                 Build/startup.o
 USART2_IRQHandler                                 Build/startup.o
 USART3_IRQHandler                                 Build/startup.o
@@ -345,7 +416,15 @@ _estack                                           Build/startup.o
 _sbss                                             Build/startup.o
 _sdata                                            Build/startup.o
 _sidata                                           Build/startup.o
+current_task                                      Build/os.o
 delay                                             Build/main.o
 isr_vector                                        Build/startup.o
 main                                              Build/main.o
                                                   Build/startup.o
+next_task                                         Build/os.o
+task1_stack                                       Build/main.o
+task2_stack                                       Build/main.o
+tcb1                                              Build/main.o
+                                                  Build/os.o
+tcb2                                              Build/main.o
+                                                  Build/os.o

@@ -79,7 +79,7 @@ typedef struct
     volatile uint32_t CNT;
     volatile uint32_t PSC;
     volatile uint32_t ARR;
-    uint32_t re;
+    uint32_t re0;
     volatile uint32_t CCR1;
     volatile uint32_t CCR2;
     volatile uint32_t CCR3;
@@ -98,13 +98,13 @@ typedef struct
 #define GPIOF ((GPIO_TypeDef *)GPIOF_PERIPH_BASE)
 #define GPIOG ((GPIO_TypeDef *)GPIOG_PERIPH_BASE)
 
-#define USART1 ((USART_TypeDef *)USART1_PERIPH_BASE);
-#define USART2 ((USART_TypeDef *)USART2_PERIPH_BASE);
-#define USART3 ((USART_TypeDef *)USART3_PERIPH_BASE);
-#define UART4 ((USART_TypeDef *)UART4_PERIPH_BASE);
-#define UART5 ((USART_TypeDef *)UART5_PERIPH_BASE);
+#define USART1 ((USART_TypeDef *)USART1_PERIPH_BASE)
+#define USART2 ((USART_TypeDef *)USART2_PERIPH_BASE)
+#define USART3 ((USART_TypeDef *)USART3_PERIPH_BASE)
+#define UART4 ((USART_TypeDef *)UART4_PERIPH_BASE)
+#define UART5 ((USART_TypeDef *)UART5_PERIPH_BASE)
 
-#define TIM1 ((TIMER_TypeDef *)TIMER1_PERIPH_BASE);
-#define TIM2 ((TIMER_TypeDef *)TIMER2_PERIPH_BASE);
-#define TIM3 ((TIMER_TypeDef *)TIMER3_PERIPH_BASE);
+#define TIM1 ((TIMER_TypeDef *)TIMER1_PERIPH_BASE)
+#define TIM2 ((TIMER_TypeDef *)TIMER2_PERIPH_BASE)
+#define TIM3 ((TIMER_TypeDef *)TIMER3_PERIPH_BASE)
 #endif
