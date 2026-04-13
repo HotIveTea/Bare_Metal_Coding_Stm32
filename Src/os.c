@@ -46,8 +46,27 @@ void OS_TaskCreate(TCB_t *tcb, void (*task_func)(void), uint32_t *stack_base, ui
 
     tcb->sp = sp; // Store the current pointer to TCB
 }
-TCB_t *current_task;
-TCB_t *next_task;
+TCB_t *volatile current_task;
+TCB_t *volatile next_task;
+TCB_t *head = 0;
+TCB_t *tail = 0;
+void OS_AddThread(TCB_t *tcb)
+{
+    __asm volatile("CPSID I \n");
+    if (head == 0)
+    {
+        head = tcb;
+        tail = tcb;
+        tcb->next = tcb;
+    }
+    else
+    {
+        tail->next = tcb;
+        tcb->next = head;
+        tail = tcb;
+    }
+    __asm volatile("CPSIE I \n");
+}
 // This function generate SysTick. The value "ticks" is CPU clock speed between each interrupt
 // For instance, CPU clock speed is 16MHz, if you want interrupt in 1ms -> ticks = 16000000 / 1000 = 16000
 void OS_InitSysTick(uint32_t ticks)
@@ -62,14 +81,7 @@ extern TCB_t tcb1;
 extern TCB_t tcb2;
 void Systick_Handler(void)
 {
-    if (current_task == &tcb1)
-    {
-        next_task = &tcb2;
-    }
-    else
-    {
-        next_task = &tcb1;
-    }
+    next_task = current_task->next;
     // Set bit 28 to 1 -> enable PENDSVSET
     SCB_ICSR |= (1 << 28);
 }
@@ -121,6 +133,10 @@ __attribute__((naked)) void SVCall_Handler(void)
 }
 void OS_Start(void)
 {
+    if (head != 0)
+    {
+        current_task = head;
+    }
     // Ticks = (System Clock / Tick Rate) - 1
     OS_InitSysTick(72000);
     __asm volatile("SVC 0 \n");
