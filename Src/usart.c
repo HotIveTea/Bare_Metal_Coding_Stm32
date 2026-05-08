@@ -63,3 +63,18 @@ void USART_SendString(USART_TypeDef *USARTx, char *str)
         USART_SendChar(USARTx, *str++);
     }
 }
+void USART_Recieved_String(USART_TypeDef *USARTx, char *buffer, int lenght)
+{
+    int i = 0;
+    char re_char;
+    while (i < lenght - 1)
+    {
+        re_char = USART_Received(USARTx);
+        if (re_char == '\n')
+            continue;
+        if (re_char == '\r')
+            break;
+        buffer[i++] = re_char;
+    }
+    buffer[i] = '\0';
+}

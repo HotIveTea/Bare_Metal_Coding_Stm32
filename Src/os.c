@@ -50,6 +50,7 @@ TCB_t *volatile current_task;
 TCB_t *volatile next_task;
 TCB_t *head = 0;
 TCB_t *tail = 0;
+// This function will mainly add task into a cicrlar linked lists
 void OS_AddThread(TCB_t *tcb)
 {
     __asm volatile("CPSID I \n");
@@ -77,12 +78,28 @@ void OS_InitSysTick(uint32_t ticks)
     // Read PM at page 247 for more info
     STK_CTRL |= (1 << 0) | (1 << 1) | (1 << 2);
 }
-extern TCB_t tcb1;
-extern TCB_t tcb2;
 void Systick_Handler(void)
 {
-    next_task = current_task->next;
-    // Set bit 28 to 1 -> enable PENDSVSET
+    TCB_t *temp = head; // Initilize varible for the search
+    // We will look the task that have sleep time and decline it by 1ms
+    if (temp != 0)
+    {
+        do
+        {
+            if (temp->sleep_time > 0)
+                temp->sleep_time--;
+            temp = temp->next;
+        } while (temp != head);
+    }
+    // After that, we will look for the task (or next task) that are awake
+    next_task = current_task;
+    do
+    {
+        next_task = next_task->next;
+        if (next_task->sleep_time == 0)
+            break;
+    } while (next_task != current_task);
+    // Set bit 28 to 1 -> enable PENDSVSET. In this function, it will "kick" the old task and add the new task
     SCB_ICSR |= (1 << 28);
 }
 __attribute__((naked)) void PendSV_Handler(void)
@@ -142,4 +159,13 @@ void OS_Start(void)
     __asm volatile("SVC 0 \n");
     while (1)
         ;
+}
+void OS_Delay(uint32_t ticks)
+{
+    // Lock the interrupt for safety
+    __asm volatile("CPSID I\n");
+    current_task->sleep_time = ticks;
+    // Open it back
+    __asm volatile("CPSIE I\n");
+    SCB_ICSR |= (1 << 28);
 }
