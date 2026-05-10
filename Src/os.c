@@ -4,7 +4,7 @@
 #define STK_LOAD *((volatile uint32_t *)0xE000E014)
 #define STK_VAL *((volatile uint32_t *)0xE000E018)
 #define SCB_ICSR *((volatile uint32_t *)0xE000ED04)
-void OS_TaskCreate(TCB_t *tcb, void (*task_func)(void), uint32_t *stack_base, uint32_t stack_size)
+void OS_TaskCreate(TCB_t *tcb, void (*task_func)(void *), void *arg, uint32_t *stack_base, uint32_t stack_size)
 {
     // Cortex-M is a full descending architecture
     // Therefore, the top pointer must point to the last element of the array
@@ -25,7 +25,7 @@ void OS_TaskCreate(TCB_t *tcb, void (*task_func)(void), uint32_t *stack_base, ui
     sp--;
     *sp = 0x01010101; // R1
     sp--;
-    *sp = 0x00000000; // R0
+    *sp = (uint32_t)arg; // R0
     // Stack of software (PendSV), PUSH/POP by itself
     sp--;
     *sp = 0x11111111; // R11
@@ -44,7 +44,8 @@ void OS_TaskCreate(TCB_t *tcb, void (*task_func)(void), uint32_t *stack_base, ui
     sp--;
     *sp = 0x04040404; // R4
 
-    tcb->sp = sp; // Store the current pointer to TCB
+    tcb->sp = sp;        // Store the current pointer to TCB
+    tcb->sleep_time = 0; // Intialize sleep time = 0
 }
 TCB_t *volatile current_task;
 TCB_t *volatile next_task;
@@ -53,6 +54,7 @@ TCB_t *tail = 0;
 // This function will mainly add task into a cicrlar linked lists
 void OS_AddThread(TCB_t *tcb)
 {
+    tcb->sleep_time = 0; // Intialize sleep time = 0
     __asm volatile("CPSID I \n");
     if (head == 0)
     {
@@ -155,7 +157,7 @@ void OS_Start(void)
         current_task = head;
     }
     // Ticks = (System Clock / Tick Rate) - 1
-    OS_InitSysTick(72000);
+    OS_InitSysTick(8000);
     __asm volatile("SVC 0 \n");
     while (1)
         ;
@@ -165,6 +167,15 @@ void OS_Delay(uint32_t ticks)
     // Lock the interrupt for safety
     __asm volatile("CPSID I\n");
     current_task->sleep_time = ticks;
+    next_task = current_task;
+    do
+    {
+        next_task = next_task->next;
+        if (next_task->sleep_time == 0)
+        {
+            break;
+        }
+    } while (next_task != current_task);
     // Open it back
     __asm volatile("CPSIE I\n");
     SCB_ICSR |= (1 << 28);
